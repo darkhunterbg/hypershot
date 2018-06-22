@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="MemoryService.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="debug.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{2ce73bd9-a313-410a-856e-8a293b308669}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MemoryService.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp" />
+  </ItemGroup>
+</Project>

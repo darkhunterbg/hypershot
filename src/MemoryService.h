@@ -1,16 +1,22 @@
 #pragma once
 
-#include "macros.h"
-
 #include <cstddef>
+#include <list>
 
+struct MemoryBlock;
 
 class MemoryService
 {
-public:
-	HSAPI MemoryService();
-	HSAPI ~MemoryService();
+private:
 
-	HSAPI void* Allocate(std::size_t size);
+	std::list<MemoryBlock> memoryList;
+	std::size_t pageSize;
+
+public:
+	MemoryService(std::size_t pageSize = 0);
+	~MemoryService();
+
+	void* Allocate(std::size_t size);
+	void Deallocate(void* ptr);
 };
 

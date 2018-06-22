@@ -4,9 +4,13 @@
 
 #include "MemoryService.h"
 
-int CALLBACK WinMain(_In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ LPSTR lcCmdLine, _In_ int nCmdShow)
+int CALLBACK WinMain(IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPSTR lcCmdLine, IN int nCmdShow)
 {
-	MemoryService service;
+	SYSTEM_INFO sysInfo ;
+
+	GetSystemInfo(&sysInfo);
+
+	MemoryService service(sysInfo.dwPageSize);
 	service.Allocate(1024);
 
 	return 0;

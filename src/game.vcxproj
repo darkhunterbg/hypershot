@@ -20,12 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MemoryService.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="macros.h" />
-    <ClInclude Include="MemoryService.h" />
-    <ClInclude Include="stdafx.h" />
+    <ProjectReference Include="hypershot.vcxproj">
+      <Project>{c7ae61a2-ed29-4b3a-96d5-6d9807865ded}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
