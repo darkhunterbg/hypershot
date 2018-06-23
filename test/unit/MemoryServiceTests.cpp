@@ -37,7 +37,7 @@ public:
 
 		service.Deallocate(ptr);
 
-		Assert::AreNotEqual(*(int*)ptr, 8);
+		Assert::AreEqual((std::size_t)0, service.GetAllocations().size());
 	}
 
 	TEST_METHOD(DeallocMemory_Nullptr_ThrowsException)
@@ -59,7 +59,8 @@ public:
 		});
 	}
 
-	TEST_METHOD(DeleteService_HasAllocatedMemory_DeletdUsedMemory)
+	/*
+	TEST_METHOD(DeleteService_HasAllocatedMemory_DeleteUsedMemory)
 	{
 		MemoryService* service = new MemoryService();
 		void* ptr = service->Allocate(sizeof(int));
@@ -69,6 +70,51 @@ public:
 
 		delete service;
 
-		Assert::AreNotEqual(*(int*)ptr, 8);
+		Assert::AreEqual((std::size_t)0, service->GetAllocations().size());
+	}
+	*/
+	
+
+	TEST_METHOD(GetAllocations_AllocatedMemory_ReturnsCorrectAllocList)
+	{
+		MemoryService serivce;
+		serivce.Allocate(8);
+		serivce.Allocate(24);
+		serivce.Allocate(128);
+
+		const std::list<MemoryBlock>& allocs = serivce.GetAllocations();
+
+		Assert::AreEqual((std::size_t)3, allocs.size());
+
+		auto iter = allocs.cbegin();
+
+		Assert::AreEqual((std::size_t)8, iter->size);
+		++iter;
+		Assert::AreEqual((std::size_t)24, iter->size);
+		++iter;
+		Assert::AreEqual((std::size_t)128, iter->size);
+		++iter;
+	}
+
+	TEST_METHOD(CreateService_UsingPageSize_AllocsPageSizeBlock)
+	{
+		MemoryService service(64);
+		service.Allocate(8);
+
+		const MemoryBlock& block = *service.GetAllocations().cbegin();
+
+		Assert::AreEqual((std::size_t)64, block.actualSize);
+		Assert::AreEqual((std::size_t)8, block.size);
+	}
+
+	TEST_METHOD(CreateService_WithoutPageSize_AllocsExactSizeBlock)
+	{
+		MemoryService service;
+		service.Allocate(8);
+
+		const MemoryBlock& block = *service.GetAllocations().cbegin();
+
+		Assert::AreEqual((std::size_t)8, block.actualSize);
+		Assert::AreEqual((std::size_t)8, block.size);
 	}
 };

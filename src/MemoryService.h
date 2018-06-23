@@ -3,7 +3,17 @@
 #include <cstddef>
 #include <list>
 
-struct MemoryBlock;
+struct MemoryBlock
+{
+	void* ptr;
+	std::size_t size;
+	std::size_t actualSize;
+
+	inline bool operator ==(const MemoryBlock& b) const
+	{
+		return ptr == b.ptr;
+	}
+};
 
 class MemoryService
 {
@@ -15,6 +25,8 @@ private:
 public:
 	MemoryService(std::size_t pageSize = 0);
 	~MemoryService();
+
+	const std::list<MemoryBlock>& GetAllocations() const;
 
 	void* Allocate(std::size_t size);
 	void Deallocate(void* ptr);

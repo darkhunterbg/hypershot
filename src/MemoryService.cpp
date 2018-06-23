@@ -1,22 +1,9 @@
 #include "stdafx.h"
 
 #include <cstdlib>
+#include <Windows.h>
 
 #include "MemoryService.h"
-
-
-struct MemoryBlock
-{
-	void* ptr;
-	std::size_t size;
-	std::size_t actualSize;
-
-public:
-	bool operator ==(const MemoryBlock& b) const
-	{
-		return ptr == b.ptr;
-	}
-};
 
 
 MemoryService::MemoryService(std::size_t pageSize)
@@ -29,8 +16,13 @@ MemoryService::~MemoryService()
 {
 	for (const MemoryBlock& block : memoryList)
 	{
-		free(block.ptr);
+		VirtualFree(block.ptr, 0, MEM_RELEASE);
 	}
+}
+
+const std::list<MemoryBlock>& MemoryService::GetAllocations() const
+{
+	return memoryList;
 }
 
 void * MemoryService::Allocate(std::size_t size)
@@ -48,7 +40,8 @@ void * MemoryService::Allocate(std::size_t size)
 		allocSize = pages * pageSize;
 	}
 
-	void* ptr = malloc(allocSize);
+	void* ptr = VirtualAlloc(nullptr, size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+	ASSERT(ptr != nullptr, "VirtualAlloc failed! Error code: %i", GetLastError());
 
 	MemoryBlock block;
 	block.ptr = ptr;
@@ -68,12 +61,13 @@ void MemoryService::Deallocate(void * ptr)
 	{
 		if (block.ptr == ptr)
 		{
-			free(ptr);
+			bool success = VirtualFree(ptr, 0, MEM_RELEASE);
+			ASSERT(success, "VirtualFree failed! Error code: %i.", GetLastError());
 			memoryList.remove(block);
 			return;
 		}
 	}
 
-	ASSERT(false, "Invalid ptr to delete!");
+	ASSERT(false, "%p is invalid ptr to delete!", ptr);
 
 }
