@@ -1,32 +1,35 @@
 #include "stdafx.h"
 
-#include <windows.h>
+#include <stdarg.h>
 #include <string>
 #include <exception>
 
-void __Assert(bool expr, const char* msg, const char* file, const int line, ...)
+namespace debug
 {
-	if (!expr)
+	AssertFailedCallback __onAssertFailed;
+
+	void __AssertFail(const char* msg, const char* file, const int line, ...)
 	{
+		std::string dbgMessage = "Assert failed: ";
 
-		std::string dbgMessage = "Assert failed: '";
+		const int bufferSize = 4096;
 
-		char buffer[4096];
+		char buffer[bufferSize];
 
 		va_list args;
-		va_start(args, msg);
-		vsnprintf_s(buffer, 4096, msg, args);
+		va_start(args, line);
+		vsnprintf_s(buffer, bufferSize, msg, args);
 		va_end(args);
 
 		dbgMessage += buffer;
-		dbgMessage += "' At: ";
+		dbgMessage += " At: ";
 		dbgMessage += file;
 		dbgMessage += " Line: ";
 		dbgMessage += std::to_string(line);
 		dbgMessage += "\n";
 
-		OutputDebugStringA(dbgMessage.c_str());
-
+		if (__onAssertFailed != nullptr)
+			__onAssertFailed(dbgMessage);
 
 		throw std::exception(msg);
 	}

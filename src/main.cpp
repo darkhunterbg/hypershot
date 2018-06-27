@@ -1,20 +1,24 @@
 #include "stdafx.h"
 
-#include<Windows.h>
+#include <Windows.h>
+#include <string>
+#include "windebug.h"
 
 #include "MemoryService.h"
 
-
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+void OnAssertFailed(const std::string& msg);
 
 int CALLBACK WinMain(IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPSTR lcCmdLine, IN int nCmdShow)
 {
+	debug::__onAssertFailed = OnAssertFailed;
+
 	SYSTEM_INFO sysInfo;
 
 	GetSystemInfo(&sysInfo);
 
 	MemoryService service(sysInfo.dwPageSize);
-
+	service.Allocate(2048);
 	
 	HWND hWnd;
 	WNDCLASSEX wc;
@@ -46,9 +50,7 @@ int CALLBACK WinMain(IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPST
 
 	if (!hWnd)
 	{
-		auto error = GetLastError();
-		ASSERT(false, "Failed to create window! Error code: %i.", error);
-
+		ASSERT(false, "Failed to create window! '%s'.", GetLastErrorString());
 		return -1;
 	}
 
@@ -80,3 +82,11 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
+
+
+void OnAssertFailed(const std::string& msg)
+{
+	OutputDebugStringA(msg.c_str());
+
+}
+

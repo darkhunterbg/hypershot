@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <Windows.h>
 
+#include "windebug.h"
+
 #include "MemoryService.h"
 
 
@@ -41,7 +43,7 @@ void * MemoryService::Allocate(std::size_t size)
 	}
 
 	void* ptr = VirtualAlloc(nullptr, size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
-	ASSERT(ptr != nullptr, "VirtualAlloc failed! Error code: %i", GetLastError());
+	ASSERT(ptr != nullptr, "VirtualAlloc failed! Error message: %s", GetLastErrorString().c_str());
 
 	MemoryBlock block;
 	block.ptr = ptr;
@@ -62,7 +64,7 @@ void MemoryService::Deallocate(void * ptr)
 		if (block.ptr == ptr)
 		{
 			bool success = VirtualFree(ptr, 0, MEM_RELEASE);
-			ASSERT(success, "VirtualFree failed! Error code: %i.", GetLastError());
+			ASSERT(success, "VirtualFree failed! Error message: %s.", GetLastErrorString().c_str());
 			memoryList.remove(block);
 			return;
 		}
