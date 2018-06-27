@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <Windows.h>
 
-#include "windebug.h"
+#include "win32.h"
 
 #include "MemoryService.h"
 

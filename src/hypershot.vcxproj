@@ -22,12 +22,12 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="MemoryService.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="windebug.h" />
+    <ClInclude Include="win32.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="MemoryService.cpp" />
-    <ClCompile Include="windebug.cpp" />
+    <ClCompile Include="win32.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

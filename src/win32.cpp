@@ -1,8 +1,5 @@
 #include "stdafx.h"
-
-#include "windebug.h"
-
-#include<Windows.h>
+#include "win32.h"
 
 std::string GetLastErrorString()
 {
