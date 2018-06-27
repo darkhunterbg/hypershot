@@ -4,12 +4,12 @@
 #include "win32.h"
 
 #include "MemoryService.h"
+#include "GameLoop.h"
+#include "HiResTimer.h"
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 void OnAssertFailed(const std::string& msg);
 void ShowGameWindow(const wchar_t* msg, HINSTANCE hInstance, int nCmdShow);
-
-void GameLoop();
 
 int CALLBACK WinMain(IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPSTR lcCmdLine, IN int nCmdShow)
 {
@@ -24,6 +24,10 @@ int CALLBACK WinMain(IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPST
 
 	MSG msg = { 0 };
 
+	GameLoop gameLoop;
+
+	HiResTimer timer;
+
 	while (true)
 	{
 		//Message pump - process windows messages before letting game run it's own logic
@@ -35,15 +39,15 @@ int CALLBACK WinMain(IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPST
 
 		if (msg.message == WM_QUIT)
 			break;
+
+		double seconds = timer.Update().ToSeconds();
+
+		timer.Reset();
+		
+
 	}
 
-
 	return msg.wParam;
-}
-
-void GameLoop()
-{
-
 }
 
 

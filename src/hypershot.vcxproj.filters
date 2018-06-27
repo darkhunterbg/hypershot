@@ -7,10 +7,17 @@
     </ClInclude>
     <ClInclude Include="debug.h" />
     <ClInclude Include="win32.h" />
+    <ClInclude Include="GameLoop.h" />
+    <ClInclude Include="HiResTimer.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
       <UniqueIdentifier>{2ce73bd9-a313-410a-856e-8a293b308669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{719c9711-98c4-4900-af57-1b091b1b3ae0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -19,5 +26,9 @@
     </ClCompile>
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="win32.cpp" />
+    <ClCompile Include="GameLoop.cpp" />
+    <ClCompile Include="HiResTimer.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

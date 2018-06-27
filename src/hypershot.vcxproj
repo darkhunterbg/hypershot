@@ -20,12 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug.h" />
+    <ClInclude Include="GameLoop.h" />
+    <ClInclude Include="HiResTimer.h" />
     <ClInclude Include="MemoryService.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="win32.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="GameLoop.cpp" />
+    <ClCompile Include="HiResTimer.cpp" />
     <ClCompile Include="MemoryService.cpp" />
     <ClCompile Include="win32.cpp" />
   </ItemGroup>
